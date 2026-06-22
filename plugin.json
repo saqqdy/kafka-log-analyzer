@@ -1,0 +1,22 @@
+{
+  "name": "kafka-log-analyzer",
+  "version": "0.1.0",
+  "description": "Kafka 日志智能分析，支持实时监控、异常检测、源码联动",
+  "author": "saqqdy",
+  "mcpServers": {
+    "kafka-analyzer": {
+      "command": "node",
+      "args": ["dist/mcp-server/index.js"]
+    }
+  },
+  "commands": {
+    "kafka-analyze": {
+      "description": "分析 Kafka 日志",
+      "handler": "dist/commands/kafka-analyze.js"
+    },
+    "kafka-lag": {
+      "description": "获取消费积压指标",
+      "handler": "dist/mcp-server/index.js"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+[2024-01-15 10:00:01] INFO  [main] Successfully sent record to topic orders partition 0 offset 100
+[2024-01-15 10:00:02] ERROR [producer-thread-1] Failed to send record to topic payments error: TimeoutException
+[2024-01-15 10:00:03] WARN  [consumer-group-1] lag exceeded threshold (5000 messages)
+[2024-01-15 10:00:04] INFO  [main] Consumer group order-processor rebalance initiated
+[2024-01-15 10:00:05] ERROR [consumer-group-1] CommitFailedException: Commit cannot be completed since the group has already rebalanced
+[2024-01-15 10:00:06] WARN  [broker-1] leader changed from 2 to 3 for partition orders-1
+[2024-01-15 10:00:07] ERROR [producer-thread-2] BufferExhaustedException: Buffer is full
+[2024-01-15 10:00:08] INFO  [main] Successfully sent record to topic orders partition 1 offset 101
+[2024-01-15 10:00:09] ERROR [consumer-group-2] OffsetOutOfRange: No offset for topic-partition orders-1
+[2024-01-15 10:00:10] WARN  [network] NetworkException: Connection to broker-3 refused

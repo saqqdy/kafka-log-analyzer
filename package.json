@@ -1,10 +1,12 @@
 {
   "name": "kafka-log-analyzer",
-  "version": "0.1.0",
   "description": "Intelligent Kafka log analysis with real-time monitoring, anomaly detection, and source code linking",
-  "author": "saqqdy",
-  "packageManager": "pnpm@9.15.9",
   "type": "module",
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.15.9",
+  "bin": {
+    "kafka-log-analyze": "./dist/cli.js"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -14,10 +16,13 @@
       "import": "./dist/index.mjs"
     }
   },
-  "bin": {
-    "kafka-log-analyze": "./dist/cli.js"
-  },
-  "files": ["dist", "scripts", "references", ".claude", ".claude-plugin"],
+  "files": [
+    "dist",
+    "scripts",
+    "references",
+    ".claude",
+    ".claude-plugin"
+  ],
   "scripts": {
     "build": "run-s clean build:bundle build:types",
     "build:bundle": "tsup",
@@ -34,15 +39,6 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
-  "keywords": [
-    "kafka",
-    "log-analyzer",
-    "kafka-log-analyzer",
-    "claude-code",
-    "claude-code-plugin",
-    "mcp"
-  ],
-  "license": "MIT",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.106.0",
     "@modelcontextprotocol/sdk": "^1.29.0"
@@ -50,6 +46,7 @@
   "devDependencies": {
     "@eslint-sets/eslint-config": "^6.3.1",
     "@types/node": "^22.20.0",
+    "@vitest/coverage-v8": "3.2.6",
     "eslint": "^9.39.4",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.9.1",
@@ -64,6 +61,16 @@
     "node": ">=18.0.0"
   },
   "sideEffects": false,
+  "keywords": [
+    "kafka",
+    "log-analyzer",
+    "kafka-log-analyzer",
+    "claude-code",
+    "claude-code-plugin",
+    "mcp"
+  ],
+  "license": "MIT",
+  "author": "saqqdy",
   "homepage": "https://github.com/saqqdy/kafka-log-analyzer#readme",
   "bugs": {
     "url": "https://github.com/saqqdy/kafka-log-analyzer/issues"

@@ -59,17 +59,114 @@
 
 ### 安装
 
-```bash
-npm install kafka-log-analyzer
+#### 方式 1：本地开发安装（推荐）
 
-# 或克隆进行开发
+```bash
+# 克隆并构建
 git clone https://github.com/saqqdy/kafka-log-analyzer.git
 cd kafka-log-analyzer
 npm install
 npm run build
+
+# 在 Claude Code 中加载插件（终端命令，不是斜杠命令）
+claude --plugin-dir .
 ```
 
-### 基础用法
+#### 方式 2：从 npm 安装（发布后）
+
+```bash
+# 发布到 npm 后
+claude plugin install kafka-log-analyzer
+```
+
+#### 方式 3：添加 GitHub 仓库作为插件市场源
+
+```bash
+# 将 GitHub 仓库添加为插件市场源
+claude plugin marketplace add https://github.com/saqqdy/kafka-log-analyzer
+
+# 然后从该市场安装插件
+claude plugin install kafka-log-analyzer
+```
+
+> ⚠️ 方式 3 要求仓库包含有效的 `marketplace.json` 清单文件。对大多数用户来说，方式 1 或 2 更简单。
+
+### ⚡ 安装后验证
+
+```bash
+# 查看已安装的插件（CLI 命令，不是斜杠命令）
+claude plugin list
+
+# 应该看到 kafka-log-analyzer 在列表中
+```
+
+### 🎯 快速使用
+
+安装成功后，直接在 Claude Code 中调用：
+
+```bash
+# 使用斜杠命令分析日志文件
+/kafka-analyze --source file --path /var/log/kafka/server.log
+
+# 或粘贴日志内容分析
+/kafka-analyze --source paste <<EOF
+[2024-01-15 10:00:01] ERROR [producer] Failed to send record to topic orders
+[2024-01-15 10:00:02] WARN  [consumer] lag exceeded threshold (5000 messages)
+EOF
+
+# 使用 MCP Tool（从 Claude Code 或 MCP 客户端）
+{
+  "tool": "analyze_log",
+  "input": {
+    "source": "paste",
+    "content": "..."
+  }
+}
+```
+
+### ⚡ 30秒快速体验核心功能
+
+使用内置测试数据快速体验所有功能：
+
+```bash
+# 1. 基础分析 - Markdown 报告
+node dist/commands/kafka-analyze.js \
+  --source file \
+  --path tests/fixtures/sample-kafka-log.txt \
+  --report markdown
+
+# 2. 按优先级过滤 - 只看严重错误
+node dist/commands/kafka-analyze.js \
+  --source file \
+  --path tests/fixtures/sample-kafka-log.txt \
+  --priority P0,P1
+
+# 3. 按组件聚焦 - 只看 Producer 问题
+node dist/commands/kafka-analyze.js \
+  --source file \
+  --path tests/fixtures/sample-kafka-log.txt \
+  --focus producer
+
+# 4. 时间线分析 - 查看事件分布
+node dist/commands/kafka-analyze.js \
+  --source file \
+  --path tests/fixtures/sample-kafka-log.txt \
+  --timeline 1m \
+  --report json
+
+# 5. Slack 格式 - 生成分享报告
+node dist/commands/kafka-analyze.js \
+  --source file \
+  --path tests/fixtures/sample-kafka-log.txt \
+  --report slack
+```
+
+**预期结果：**
+- 检测到 6 个错误事件（Producer 超时、Consumer Lag、Rebalance 等）
+- 发现异常：`error_rate_spike`（错误率突增）、`rebalance_storm`（频繁 Rebalance）
+- 生成结构化诊断报告
+
+### 📊 基础用法
 
 #### 1. 分析日志文件
 
@@ -108,6 +205,30 @@ EOF
   "timeline": "1h"
 }
 ```
+
+#### 4. Python 脚本独立验证
+
+```bash
+# 日志解析
+python3 scripts/parse_kafka_log.py --input tests/fixtures/sample-kafka-log.txt
+
+# 异常检测
+python3 scripts/detect_anomalies.py --input tests/fixtures/sample-kafka-log.txt
+
+# 报告生成
+python3 scripts/generate_report.py --input tests/fixtures/sample-kafka-log.txt --format markdown
+```
+
+### 🎯 功能矩阵
+
+| 功能 | 命令参数 | 说明 |
+|------|---------|------|
+| **日志解析** | `--source file --path xxx.log` | 支持 paste/file 两种输入 |
+| **错误过滤** | `--priority P0,P1` | 4 级优先级过滤（P0-P3） |
+| **组件聚焦** | `--focus producer,consumer` | 按组件精准分析 |
+| **时间线分析** | `--timeline 1m` | 事件时间分布统计 |
+| **多种输出** | `--report markdown|json|slack` | 3 种输出格式 |
+| **异常检测** | 自动检测 | 7 种异常模式（错误率突增、Rebalance风暴等） |
 
 ---
 
@@ -259,6 +380,9 @@ node dist/commands/kafka-analyze.js \
 
 ```
 kafka-log-analyzer/
+├── .claude-plugin/
+│   └── plugin.json        # 插件清单（必需）
+├── marketplace.json       # 市场源定义
 ├── src/
 │   ├── commands/           # CLI 命令
 │   │   └── kafka-analyze.ts
@@ -319,7 +443,7 @@ cp .env.example .env
 
 ## 🤝 贡献
 
-欢迎贡献！请阅读我们的贡献指南。
+欢迎贡献！请阅读 [贡献指南](CONTRIBUTING.md)。
 
 ```bash
 # 开发
@@ -327,8 +451,21 @@ npm install
 npm run dev          # 监听模式
 npm test             # 运行测试
 npm run lint         # Lint 检查
+npm run format       # 格式化代码
 npm run build        # 构建
 ```
+
+---
+
+## 📚 文档
+
+| 文档 | 说明 |
+|------|------|
+| [架构设计](docs/architecture/overview.md) | 技术架构和数据流 |
+| [API 参考](docs/api/mcp-tools.md) | MCP Tools 完整 API |
+| [部署指南](docs/deployment/guide.md) | 多种部署方式 |
+| [贡献指南](CONTRIBUTING.md) | 开发规范和 PR 流程 |
+| [变更日志](CHANGELOG.md) | 版本变更记录 |
 
 ---
 
@@ -338,7 +475,7 @@ MIT © [saqqdy](https://github.com/saqqdy)
 
 ---
 
-## 📚 资源
+## 🔗 资源
 
 - [Kafka 官方文档](https://kafka.apache.org/documentation/)
 - [MCP 协议规范](https://modelcontextprotocol.io/)

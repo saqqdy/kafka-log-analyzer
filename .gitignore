@@ -1,9 +1,16 @@
 # Dependencies
 node_modules/
+pnpm-lock.yaml
 
 # Build output
 dist/
 *.tsbuildinfo
+
+# Test coverage
+coverage/
+
+# VitePress
+docs/.vitepress/cache/
 
 # Environment
 .env
@@ -24,11 +31,12 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
-
-# Storage data (user-specific)
-storage/data/
-!storage/.gitkeep
+pnpm-debug.log*
 
 # Temporary files
 *.tmp
 *.temp
+
+# Storage data (user-specific, Phase 4)
+storage/data/
+!storage/.gitkeep

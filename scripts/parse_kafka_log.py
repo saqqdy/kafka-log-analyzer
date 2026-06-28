@@ -35,7 +35,7 @@ EVENT_PATTERNS = {
     'send_success': re.compile(r'Successfully sent record to topic (\w+) partition (\d+) offset (\d+)'),
     'send_failure': re.compile(r'Failed to send record.*topic (\w+).*error: (.+)'),
     'consumer_lag': re.compile(r'lag exceeded threshold \((\d+) messages\)'),
-    'rebalance': re.compile(r'Consumer group (\w+).*rebalance|Revoking previously assigned|Re-)joining group'),
+    'rebalance': re.compile(r'Consumer group (\w+).*rebalance|Revoking previously assigned|Re-joining group'),
     'commit_failure': re.compile(r'CommitFailedException|Commit cannot be completed'),
     'buffer_exhausted': re.compile(r'BufferExhaustedException|Buffer is full'),
     'leader_change': re.compile(r'leader changed from \d+ to \d+|NotLeaderForPartition'),

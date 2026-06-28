@@ -6,23 +6,24 @@
  */
 
 interface GetLagInput {
-  cluster?: string;
-  consumer_group?: string;
-  topic?: string;
+  cluster?: string
+  consumer_group?: string
+  topic?: string
 }
 
 interface LagData {
-  cluster: string;
-  group: string;
-  topic: string;
-  partition: number;
-  lag: number;
-  timestamp: string;
+  cluster: string
+  group: string
+  topic: string
+  partition: number
+  lag: number
+  timestamp: string
 }
 
 interface GetLagOutput {
-  lags: LagData[];
-  message?: string;
+  lags: LagData[]
+  timestamp?: string
+  message?: string
 }
 
 /**
@@ -32,6 +33,8 @@ export async function getLag(input: GetLagInput): Promise<GetLagOutput> {
   // Placeholder: Return mock data or indicate Prometheus not configured
   return {
     lags: [],
-    message: 'get_lag tool requires Prometheus configuration. See Task 10 in START.md for implementation.',
-  };
+    timestamp: new Date().toISOString(),
+    message:
+      'get_lag tool requires Prometheus configuration. See Task 10 in START.md for implementation.',
+  }
 }

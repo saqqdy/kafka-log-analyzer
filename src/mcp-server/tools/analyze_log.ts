@@ -154,11 +154,14 @@ export async function analyzeLog(input: AnalyzeLogInput): Promise<AnalyzeLogOutp
       // Execute anomaly detection (accepts positional JSON file argument)
       const anomalyArgs: string[] = [tempJsonFile]
       const anomalyOutput = await executePython('detect_anomalies.py', anomalyArgs)
-      const anomalies = JSON.parse(anomalyOutput)
+      const anomalyResult = JSON.parse(anomalyOutput)
+      // Python returns {anomalies: [...], total_anomalies, critical, high, medium, low}
+      const rawAnomalies: unknown[] = Array.isArray(anomalyResult)
+        ? anomalyResult
+        : anomalyResult.anomalies || []
 
-      // Build summary
       // Map Python severity (critical/high/medium/low) to P0-P3
-      const mappedAnomalies = anomalies.map((a: Record<string, unknown>) => ({
+      const mappedAnomalies = (rawAnomalies as Record<string, unknown>[]).map((a) => ({
         ...a,
         severity: mapSeverity(a.severity as string),
       })) as Anomaly[]

@@ -1,0 +1,18 @@
+{
+  "name": "kafka-log-analyzer",
+  "version": "0.1.0",
+  "description": "AI-powered Kafka log analysis with real-time monitoring, anomaly detection, and source code integration",
+  "author": {
+    "name": "saqqdy",
+    "url": "https://github.com/saqqdy"
+  },
+  "repository": "https://github.com/saqqdy/kafka-log-analyzer",
+  "license": "MIT",
+  "keywords": ["kafka", "log-analysis", "anomaly-detection", "mcp"],
+  "mcpServers": {
+    "kafka-analyzer": {
+      "command": "node",
+      "args": ["dist/mcp-server/index.js"]
+    }
+  }
+}

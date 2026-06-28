@@ -1,0 +1,22 @@
+{
+  "name": "kafka-log-analyzer",
+  "description": "Kafka observability and log analysis plugins by saqqdy — AI-powered diagnostics for Kafka clusters",
+  "owner": {
+    "name": "saqqdy",
+    "url": "https://github.com/saqqdy"
+  },
+  "plugins": [
+    {
+      "name": "kafka-log-analyzer",
+      "description": "AI-powered Kafka log analysis with real-time monitoring, anomaly detection, and source code integration",
+      "version": "0.1.0",
+      "author": {
+        "name": "saqqdy",
+        "url": "https://github.com/saqqdy"
+      },
+      "source": "./",
+      "category": "observability",
+      "tags": ["kafka", "log-analysis", "anomaly-detection", "mcp", "monitoring"]
+    }
+  ]
+}

@@ -61,23 +61,25 @@ class KafkaLogEvent:
     """Kafka 日志事件。"""
     timestamp: str
     level: str
-    thread: str
+    component: str  # Renamed from 'thread' for TS compatibility
     event_type: str
     topic: Optional[str] = None
     partition: Optional[int] = None
     offset: Optional[int] = None
     error: Optional[str] = None
     offset_lag: Optional[int] = None
-    raw_message: str = ""
+    message: str = ""  # Renamed from 'raw_message' for TS compatibility
 
 
 def detect_format(line: str) -> str:
     """自动检测日志行格式。"""
     line = line.strip()
-    if line.startswith('{') or line.startswith('['):
-        return 'json'
+    # Check text pattern first since [timestamp] format is common
     if TEXT_LOG_PATTERN.match(line):
         return 'text'
+    # Then check JSON (object or array)
+    if line.startswith('{') or line.startswith('['):
+        return 'json'
     return 'unknown'
 
 
@@ -86,7 +88,7 @@ def parse_text_line(line: str) -> Optional[KafkaLogEvent]:
     match = TEXT_LOG_PATTERN.match(line.strip())
     if not match:
         return None
-    timestamp, level, thread, message = match.groups()
+    timestamp, level, component, message = match.groups()
     event_type = 'unknown'
     topic, partition, offset, error, offset_lag = None, None, None, None, None
 
@@ -104,7 +106,7 @@ def parse_text_line(line: str) -> Optional[KafkaLogEvent]:
                 topic = pm.group(1) if pm.lastindex and pm.lastindex >= 1 else None
             break
 
-    return KafkaLogEvent(timestamp, level, thread, event_type, topic, partition,
+    return KafkaLogEvent(timestamp, level, component, event_type, topic, partition,
                          offset, error, offset_lag, message)
 
 
@@ -117,7 +119,7 @@ def parse_json_line(line: str) -> Optional[KafkaLogEvent]:
 
     timestamp = obj.get("timestamp", obj.get("@timestamp", obj.get("time", "")))
     level = obj.get("level", obj.get("severity", "INFO")).upper()
-    thread = obj.get("thread", obj.get("threadName", ""))
+    component = obj.get("thread", obj.get("threadName", ""))
     message = obj.get("message", obj.get("msg", obj.get("formattedMessage", "")))
     topic = obj.get("topic", obj.get("meta", {}).get("topic"))
     error = obj.get("error", obj.get("exception", obj.get("stackTrace")))
@@ -132,11 +134,11 @@ def parse_json_line(line: str) -> Optional[KafkaLogEvent]:
     return KafkaLogEvent(
         timestamp=str(timestamp),
         level=level,
-        thread=str(thread),
+        component=str(component),
         event_type=event_type,
         topic=topic,
         error=str(error) if error else None,
-        raw_message=message,
+        message=message,
     )
 
 
@@ -252,7 +254,7 @@ def watch_file(file_path: Path, fmt: str = "auto", interval: float = 1.0) -> Non
                     if event:
                         level_icon = {"ERROR": "🔴", "WARN": "🟡", "INFO": "🟢"}.get(event.level, "⚪")
                         topic_info = f" [{event.topic}]" if event.topic else ""
-                        print(f"{level_icon} {event.timestamp} {event.level}{topic_info} {event.event_type}: {event.raw_message[:80]}")
+                        print(f"{level_icon} {event.timestamp} {event.level}{topic_info} {event.event_type}: {event.message[:80]}")
                 else:
                     time.sleep(interval)
         except KeyboardInterrupt:
@@ -316,7 +318,7 @@ def main():
     else:
         result = analyze_file(args.input, args.format, args.timeline, window_seconds)
 
-    output = json.dumps(result['stats'], indent=2, ensure_ascii=False)
+    output = json.dumps(result, indent=2, ensure_ascii=False)
     if args.output:
         args.output.write_text(output, encoding="utf-8")
         print(f'Stats written to {args.output}')

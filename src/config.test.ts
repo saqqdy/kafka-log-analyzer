@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { getDefaultConfig, mergeConfig, DEFAULT_CONFIG } from './utils/config.js'
+import { describe, expect, it } from 'vitest'
+import { DEFAULT_CONFIG, getDefaultConfig, mergeConfig } from './utils/config.js'
 
 describe('config', () => {
   describe('getDefaultConfig', () => {

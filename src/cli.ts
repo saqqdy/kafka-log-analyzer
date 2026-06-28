@@ -11,13 +11,13 @@
  *   version                                    Show version
  */
 
-import { parseArgs } from 'node:util'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { formatReport, formatLagResult, formatDuration } from './utils/format.js'
+import { parseArgs } from 'node:util'
 import { analyzeLog } from './mcp-server/tools/analyze_log.js'
 import { getLag } from './mcp-server/tools/get_lag.js'
 import { VERSION } from './types.js'
+import { formatDuration, formatLagResult, formatReport } from './utils/format.js'
 
 const COMMANDS = ['analyze', 'analyze-paste', 'lag', 'help', 'version'] as const
 type Command = (typeof COMMANDS)[number]

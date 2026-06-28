@@ -3,12 +3,12 @@
  */
 
 import type {
-  Event,
-  Anomaly,
   AnalysisResult,
-  TimelineBucket,
+  Anomaly,
+  Event,
   LagEntry,
   Priority,
+  TimelineBucket,
 } from '../types.js'
 
 // ─── Event Formatting ──────────────────────────────────────────────
@@ -214,7 +214,7 @@ export function formatDuration(ms: number): string {
 /** Truncate string to specified length */
 export function truncate(str: string, maxLength: number): string {
   if (str.length <= maxLength) return str
-  return str.slice(0, maxLength - 3) + '...'
+  return `${str.slice(0, maxLength - 3)  }...`
 }
 
 /** Format timestamp to local time */

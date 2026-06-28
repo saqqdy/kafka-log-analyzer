@@ -148,7 +148,7 @@ function formatSlackReport(result: Awaited<ReturnType<typeof analyzeLog>>): stri
 }
 
 // Main command handler
-async function main() {
+async function main(): Promise<void> {
   const args = process.argv.slice(2);
 
   try {
@@ -206,7 +206,7 @@ async function main() {
         break;
     }
 
-    console.log(output);
+    console.info(output);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     console.error(`Error: ${message}`);

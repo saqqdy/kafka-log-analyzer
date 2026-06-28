@@ -4,9 +4,9 @@
  * Analyzes Kafka logs by calling Python scripts for parsing and anomaly detection.
  */
 
-import { spawn } from 'child_process'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import { spawn } from 'node:child_process'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -78,8 +78,8 @@ async function executePython(scriptName: string, args: string[]): Promise<string
       cwd: scriptsDir,
     })
 
-    let stdout = ''
-    let stderr = ''
+    let stdout = '',
+     stderr = ''
 
     process.stdout.on('data', (data) => {
       stdout += data.toString()
@@ -117,12 +117,12 @@ export async function analyzeLog(input: AnalyzeLogInput): Promise<AnalyzeLogOutp
 
   // Build arguments for parse_kafka_log.py
   // Note: Python script accepts positional argument, not --file flag
-  const fs = await import('fs/promises')
-  const os = await import('os')
+  const fs = await import('node:fs/promises')
+  const os = await import('node:os')
 
-  let filePath: string
-  let tempFile: string | null = null
-  let needsCleanup = false
+  let filePath: string,
+   tempFile: string | null = null,
+   needsCleanup = false
 
   if (input.source === 'paste') {
     // For paste, create temp file

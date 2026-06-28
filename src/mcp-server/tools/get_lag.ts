@@ -29,7 +29,7 @@ interface GetLagOutput {
 /**
  * Get consumer lag metrics (placeholder implementation)
  */
-export async function getLag(input: GetLagInput): Promise<GetLagOutput> {
+export async function getLag(_input: GetLagInput): Promise<GetLagOutput> {
   // Placeholder: Return mock data or indicate Prometheus not configured
   return {
     lags: [],

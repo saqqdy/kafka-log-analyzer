@@ -8,43 +8,43 @@ export { getLag } from './mcp-server/tools/get_lag.js'
 
 // Types
 export type {
-  Event,
-  EventLevel,
-  EventComponent,
-  EventType,
-  Priority,
-  Anomaly,
-  AnomalyType,
   AnalysisResult,
   AnalysisSummary,
-  TimelineBucket,
-  TimelineWindow,
   AnalyzeLogOptions,
-  GetLagOptions,
-  TimelineOptions,
+  AnalyzerConfig,
+  Anomaly,
+  AnomalyType,
+  CacheConfig,
+  CacheStore,
+  ErrorCode,
+  ErrorResponse,
+  Event,
+  EventComponent,
+  EventLevel,
+  EventType,
   FocusArea,
+  GetLagOptions,
   LagEntry,
   LagResult,
-  AnalyzerConfig,
-  CacheStore,
-  CacheConfig,
-  ErrorResponse,
-  ErrorCode,
+  Priority,
+  TimelineBucket,
+  TimelineOptions,
+  TimelineWindow,
 } from './types.js'
 export { VERSION } from './types.js'
 
-// Utils
-export { logger } from './utils/logger.js'
-export { config, loadConfig, getDefaultConfig, mergeConfig } from './utils/config.js'
+export { config, getDefaultConfig, loadConfig, mergeConfig } from './utils/config.js'
+// Errors
+export * from './utils/errors.js'
 export {
-  formatEvent,
   formatAnomaly,
-  formatSummary,
-  formatReport,
-  formatLagResult,
   formatDuration,
+  formatEvent,
+  formatLagResult,
+  formatReport,
+  formatSummary,
   truncate,
 } from './utils/format.js'
 
-// Errors
-export * from './utils/errors.js'
+// Utils
+export { logger } from './utils/logger.js'

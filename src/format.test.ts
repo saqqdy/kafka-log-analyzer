@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { formatDuration, truncate, formatPriority, formatAnomalyType } from './utils/format.js'
+import { describe, expect, it } from 'vitest'
+import { formatAnomalyType, formatDuration, formatPriority, truncate } from './utils/format.js'
 
 describe('format', () => {
   describe('formatDuration', () => {

@@ -2,15 +2,16 @@
  * Unit tests for analyze_log tool
  */
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { analyzeLog } from '../src/mcp-server/tools/analyze_log.js';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 describe('analyze_log tool', () => {
   const fixturesDir = join(__dirname, 'fixtures');
-  let sampleLog: string;
-  let expectedOutput: any;
+  let sampleLog: string,
+    // eslint-disable-next-line unused-imports/no-unused-vars
+    expectedOutput: any;
 
   beforeAll(() => {
     sampleLog = readFileSync(join(fixturesDir, 'sample-kafka-log.txt'), 'utf-8');

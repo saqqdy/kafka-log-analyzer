@@ -13,11 +13,15 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 
 const currentLevel = (process.env.LOG_LEVEL || 'info') as LogLevel
 
-export function log(level: LogLevel, message: string, ...args: unknown[]) {
+export function log(level: LogLevel, message: string, ...args: unknown[]): void {
   if (LOG_LEVELS[level] >= LOG_LEVELS[currentLevel]) {
     const timestamp = new Date().toISOString()
     const prefix = `[${timestamp}] [${level.toUpperCase()}]`
-    console[level === 'error' ? 'error' : 'log'](prefix, message, ...args)
+    if (level === 'error') {
+      console.error(prefix, message, ...args)
+    } else {
+      console.info(prefix, message, ...args)
+    }
   }
 }
 
